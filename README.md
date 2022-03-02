@@ -6,7 +6,7 @@
 1. `clone` the repository,
 
 ```
-$ git clone "https://github.com/wanted-Team4/wanted-codestates-project-4-2.git"
+$ https://github.com/slobbie/netflix-clone.git"
 ```
 
 2. `add` dependencies,
