@@ -1,17 +1,24 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Route, Routes } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import { ThemeProvider } from 'styled-components';
-import { darkTheme, lightTheme } from './theme';
+import Home from './conponents/Home';
+import Search from './conponents/Search';
+import Tv from './conponents/Tv';
+import Nav from './layout/Nav';
+import { theme } from './theme';
 
 function App() {
   return (
-    <div className='App'>
-      <ThemeProvider theme={darkTheme}>
-        <GlobalStyle />
-      </ThemeProvider>
-    </div>
+    <ThemeProvider theme={theme}>
+      <Nav />
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/TV' element={<Tv />} />
+        <Route path='/search' element={<Search />} />
+      </Routes>
+      <GlobalStyle />
+    </ThemeProvider>
   );
 }
 
@@ -71,8 +78,8 @@ table {
 }
 body {
   font-family: 'Source Sans Pro', sans-serif;
-  background-color: ${(props) => props.theme.bgColor};
-  color: ${(props) => props.theme.textColor}
+ 
+ 
 }
 a{
   text-decoration: none;
