@@ -12,7 +12,7 @@ $ https://github.com/slobbie/netflix-clone.git"
 2. `add` dependencies,
 
 ```
-$ yarn install
+$ yarn add
 ```
 
 3. `start` the project,
