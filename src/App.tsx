@@ -2,9 +2,9 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import { ThemeProvider } from 'styled-components';
-import Home from './conponents/Home';
-import Search from './conponents/Search';
-import Tv from './conponents/Tv';
+import Home from './components/Home';
+import Search from './components/Search';
+import Tv from './components/Tv';
 import Nav from './layout/Nav';
 import { theme } from './theme';
 
@@ -78,7 +78,7 @@ table {
 }
 body {
   font-family: 'Source Sans Pro', sans-serif;
- 
+   color: ${(props) => props.theme.white.darker} ;
  
 }
 a{
