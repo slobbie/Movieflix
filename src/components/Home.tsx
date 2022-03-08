@@ -21,6 +21,33 @@ const rowVariants = {
     x: -window.outerWidth - 5,
   },
 };
+// 슬라이더 박스 호버 이벤트 설정
+const BoxVariants = {
+  normal: {
+    scale: 1,
+  },
+  hover: {
+    scale: 1.3,
+    y: -50,
+    transition: {
+      delay: 0.5,
+      duration: 0.3,
+      type: 'tween',
+    },
+  },
+};
+const infoVariants = {
+  hover: {
+    opacity: 1,
+    transition: {
+      delay: 0.5,
+      duaration: 0.1,
+      type: 'tween',
+    },
+  },
+};
+
+const offset = 6;
 
 const Home = () => {
   // API 에서 사용할 정보를 받아온다.useQuery 는 두가지 키값을 제공해줘야한다.
@@ -54,10 +81,7 @@ const Home = () => {
   // exit 버그를 해결을 위한 상태값
   const [leaving, setLeaving] = useState(false);
   // 페이지의 크기
-  const offset = 6;
 
-  // index
-  let page = 0;
   return (
     <Wrapper style={{ height: '200vh' }}>
       {isLoading ? (
@@ -92,8 +116,16 @@ const Home = () => {
                   .map((movie) => (
                     <Box
                       key={movie.id}
+                      whileHover='hover'
+                      initial='normal'
+                      variants={BoxVariants}
+                      transition={{ type: 'tween' }}
                       bgPhoto={makeImgePath(movie.backdrop_path, 'w500')}
-                    ></Box>
+                    >
+                      <Info variants={infoVariants}>
+                        <h4>{movie.title}</h4>
+                      </Info>
+                    </Box>
                   ))}
               </Row>
             </AnimatePresence>
@@ -107,6 +139,7 @@ export default Home;
 
 const Wrapper = styled.div`
   background-color: black;
+  padding-bottom: 200px;
 `;
 
 const Loader = styled.div`
@@ -118,7 +151,6 @@ const Loader = styled.div`
 
 const Banner = styled.div<{ bgPhoto: string }>`
   height: 100vh;
-  background-color: orange;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -153,8 +185,28 @@ const Row = styled(motion.div)`
 
 const Box = styled(motion.div)<{ bgPhoto: string }>`
   background-color: white;
-  height: 200px;
   background-image: url(${(props) => props.bgPhoto});
   background-size: cover;
-  background-position: center;
+  background-position: center center;
+  height: 200px;
+  font-size: 66px;
+  &:first-child {
+    transform-origin: center left;
+  }
+  &:last-child {
+    transform-origin: center right;
+  }
+`;
+
+const Info = styled(motion.div)`
+  position: absolute;
+  padding: 10px;
+  background-color: ${(props) => props.theme.black.lighter};
+  opacity: 0;
+  width: 100%;
+  bottom: 0;
+  h4 {
+    text-align: center;
+    font-size: 14px;
+  }
 `;
