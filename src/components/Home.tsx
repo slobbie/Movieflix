@@ -1,6 +1,7 @@
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useViewportScroll } from 'framer-motion';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
+import { useMatch, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { getMovies } from '../Api/Api';
 import { IGetMoviesDataModel } from '../Api/model/movie-data-model';
@@ -13,7 +14,7 @@ const rowVariants = {
     x: window.outerWidth + 5,
   },
   // 보일때
-  visble: {
+  visible: {
     x: 0,
   },
   // 사라질때
@@ -21,12 +22,14 @@ const rowVariants = {
     x: -window.outerWidth - 5,
   },
 };
+
 // 슬라이더 박스 호버 이벤트 설정
-const BoxVariants = {
+const boxVariants = {
   normal: {
     scale: 1,
   },
   hover: {
+    zIndex: 99,
     scale: 1.3,
     y: -50,
     transition: {
@@ -36,12 +39,13 @@ const BoxVariants = {
     },
   },
 };
+
 const infoVariants = {
   hover: {
     opacity: 1,
     transition: {
       delay: 0.5,
-      duaration: 0.1,
+      duaration: 0.3,
       type: 'tween',
     },
   },
@@ -50,6 +54,13 @@ const infoVariants = {
 const offset = 6;
 
 const Home = () => {
+  const Navigate = useNavigate();
+  const bigMovieMatch = useMatch('/movies/:movieId');
+  // console.log(bigMovieMatch);
+
+  // object를 하나 리턴 해줌 그안엔 스크롤 x,y , porgess값 또는 스크롤된 거리의 숫자값이 들어있다.
+  const { scrollY } = useViewportScroll();
+
   // API 에서 사용할 정보를 받아온다.useQuery 는 두가지 키값을 제공해줘야한다.
   //  사용할 데이터의 아이디를 제공해주는것 key / value  / 사용할  API를 선언한 함수
   // useQuery 사용할 데이터와 로딩중인지 체크 해준다.
@@ -57,11 +68,15 @@ const Home = () => {
     ['movies', 'nowPlaying'],
     getMovies
   );
-  console.log(data, isLoading);
+  // console.log(data, isLoading);
 
   //AnimatePresence 는 컴포넌트가 render 되거나 destroy 될때 효과를 줄수 있다.
   // slide 이벤트를 위해 index를 만들어 준다.
   const [index, setIndex] = useState(0);
+
+  // exit 버그를 해결을 위한 상태값
+  const [leaving, setLeaving] = useState(false);
+
   //setIndex 의 이전 상태를 기억하고 그 상태에서 index + 1
   const incrassIndex = () => {
     if (data) {
@@ -78,12 +93,24 @@ const Home = () => {
   };
 
   const toggleLeaving = () => setLeaving((prev) => !prev);
-  // exit 버그를 해결을 위한 상태값
-  const [leaving, setLeaving] = useState(false);
-  // 페이지의 크기
 
+  // 페이지의 크기
+  const onBoxClicked = (movieId: number) => {
+    Navigate(`/movies/${movieId}`);
+  };
+
+  const onOverlayClick = () => {
+    Navigate('/');
+  };
+
+  const clickedMovie =
+    bigMovieMatch?.params.movieId &&
+    data?.results.find(
+      (movie) => movie.id + '' === bigMovieMatch.params.movieId
+    );
+  // console.log(clickedMovie);
   return (
-    <Wrapper style={{ height: '200vh' }}>
+    <Wrapper>
       {isLoading ? (
         <Loader>Loading...</Loader>
       ) : (
@@ -91,7 +118,7 @@ const Home = () => {
           {/* 이미지가 존재 하지 않으면 ""  출력 */}
           <Banner
             onClick={incrassIndex}
-            bgPhoto={makeImgePath(data?.results[0].backdrop_path || '')}
+            bgphoto={makeImgePath(data?.results[0].backdrop_path || '')}
           >
             <Title>{data?.results[0].title}</Title>
             <Overview>{data?.results[0].overview}</Overview>
@@ -103,7 +130,7 @@ const Home = () => {
               <Row
                 variants={rowVariants}
                 initial='hidden'
-                animate='visble'
+                animate='visible'
                 exit='exit'
                 key={index}
                 transition={{ type: 'tween', duration: 1 }}
@@ -115,12 +142,14 @@ const Home = () => {
                   .slice(offset * index, offset * index + offset)
                   .map((movie) => (
                     <Box
+                      layoutId={movie.id + ''}
                       key={movie.id}
                       whileHover='hover'
                       initial='normal'
-                      variants={BoxVariants}
+                      variants={boxVariants}
                       transition={{ type: 'tween' }}
-                      bgPhoto={makeImgePath(movie.backdrop_path, 'w500')}
+                      onClick={() => onBoxClicked(movie.id)}
+                      bgphoto={makeImgePath(movie.backdrop_path, 'w400')}
                     >
                       <Info variants={infoVariants}>
                         <h4>{movie.title}</h4>
@@ -130,6 +159,36 @@ const Home = () => {
               </Row>
             </AnimatePresence>
           </Slider>
+          <AnimatePresence>
+            {bigMovieMatch ? (
+              <>
+                <Overlay
+                  onClick={onOverlayClick}
+                  exit={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                />
+                <BigMovie
+                  style={{ top: scrollY.get() + 100 }}
+                  layoutId={bigMovieMatch.params.movieId}
+                >
+                  {clickedMovie && (
+                    <>
+                      <BigCover
+                        style={{
+                          backgroundImage: `linear-gradient(to top, black, transparent) , url(${makeImgePath(
+                            clickedMovie.backdrop_path,
+                            'w500'
+                          )})`,
+                        }}
+                      />
+                      <BigTitle>{clickedMovie.title}</BigTitle>
+                      <BigOverview>{clickedMovie.overview}</BigOverview>
+                    </>
+                  )}
+                </BigMovie>
+              </>
+            ) : null}
+          </AnimatePresence>
         </>
       )}
     </Wrapper>
@@ -149,20 +208,20 @@ const Loader = styled.div`
   align-items: center;
 `;
 
-const Banner = styled.div<{ bgPhoto: string }>`
+const Banner = styled.div<{ bgphoto: string }>`
   height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 60px;
   background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
-    url(${(props) => props.bgPhoto});
+    url(${(props) => props.bgphoto});
   background-size: cover;
 `;
 
 const Title = styled.h2`
   font-size: 50px;
-  margin-bottom: 12px;
+  margin-bottom: 20px;
 `;
 
 const Overview = styled.p`
@@ -183,13 +242,15 @@ const Row = styled(motion.div)`
   width: 100%;
 `;
 
-const Box = styled(motion.div)<{ bgPhoto: string }>`
+const Box = styled(motion.div)<{ bgphoto: string }>`
   background-color: white;
-  background-image: url(${(props) => props.bgPhoto});
+  background-image: url(${(props) => props.bgphoto});
   background-size: cover;
   background-position: center center;
   height: 200px;
   font-size: 66px;
+  position: relative;
+  cursor: pointer;
   &:first-child {
     transform-origin: center left;
   }
@@ -209,4 +270,47 @@ const Info = styled(motion.div)`
     text-align: center;
     font-size: 14px;
   }
+`;
+
+const Overlay = styled(motion.div)`
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+`;
+
+const BigMovie = styled(motion.div)`
+  position: absolute;
+  width: 40vw;
+  height: 80vh;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  border-radius: 15px;
+  overflow: hidden;
+  background-color: ${(props) => props.theme.black.lighter};
+`;
+
+const BigCover = styled.div`
+  width: 100%;
+  background-size: cover;
+  background-position: center center;
+  height: 400px;
+`;
+
+const BigTitle = styled.h3`
+  color: ${(props) => props.theme.white.lighter};
+  padding: 20px;
+  font-size: 27px;
+  position: relative;
+  top: -60px;
+`;
+
+const BigOverview = styled.p`
+  position: relative;
+  padding: 20px;
+  color: ${(props) => props.theme.white.lighter};
+  top: -60px;
 `;

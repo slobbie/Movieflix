@@ -13,7 +13,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <Nav />
       <Routes>
-        <Route path='/' element={<Home />} />
+        <Route path='/*' element={<Home />} />
         <Route path='/TV' element={<Tv />} />
         <Route path='/search' element={<Search />} />
       </Routes>

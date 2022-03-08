@@ -1,6 +1,7 @@
 import { motion, useAnimation, useViewportScroll } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { Link, useMatch } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { Link, useMatch, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const navVariants = {
@@ -11,6 +12,10 @@ const navVariants = {
     backgroundColor: 'rgba(0,0,0,1)',
   },
 };
+
+interface IForm {
+  Keyword: string;
+}
 
 const Nav = () => {
   // search button toggle event
@@ -50,6 +55,12 @@ const Nav = () => {
       }
     });
   }, [scrollY, navAnimation]);
+  const navigate = useNavigate();
+  const { register, handleSubmit } = useForm<IForm>();
+  const onValid = (data: IForm) => {
+    navigate(`/search?keyword=${data.Keyword}`);
+  };
+
   return (
     <NavBar variants={navVariants} animate={navAnimation} initial={'top'}>
       <Col>
@@ -81,7 +92,7 @@ const Nav = () => {
         </Items>
       </Col>
       <Col>
-        <Search>
+        <Search onSubmit={handleSubmit(onValid)}>
           <motion.svg
             onClick={() => onSearchToggle()}
             animate={{ x: searchOpen ? -185 : 0 }}
@@ -97,6 +108,7 @@ const Nav = () => {
             ></path>
           </motion.svg>
           <Input
+            {...register('Keyword', { required: true, minLength: 2 })}
             animate={inputAnimation}
             initial={{ scaleX: 0 }}
             transition={{ type: 'linear' }}
@@ -156,7 +168,7 @@ const Item = styled.li`
   }
 `;
 
-const Search = styled.span`
+const Search = styled.form`
   color: white;
   display: flex;
   align-items: center;
