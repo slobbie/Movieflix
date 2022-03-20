@@ -94,7 +94,6 @@ const Home = () => {
 
   const toggleLeaving = () => setLeaving((prev) => !prev);
 
-  // 페이지의 크기
   const onBoxClicked = (movieId: number) => {
     Navigate(`/movies/${movieId}`);
   };
@@ -108,7 +107,7 @@ const Home = () => {
     data?.results.find(
       (movie) => movie.id + '' === bigMovieMatch.params.movieId
     );
-  // console.log(clickedMovie);
+  console.log(clickedMovie);
   return (
     <Wrapper>
       {isLoading ? (
