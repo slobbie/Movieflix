@@ -5,7 +5,7 @@ import { useMatch, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { getMovies } from '../Api/Api';
 import { IGetMoviesDataModel } from '../Api/model/movie-data-model';
-import { makeImgePath } from './utils';
+import { makeImgePath } from '../components/utils';
 
 const rowVariants = {
   // 보이지 않을때
@@ -125,6 +125,7 @@ const Home = () => {
           <Slider>
             {/* //onExitComplete 에 함수를 넣으면 exit 이 끝났을때 실행된다. */}
             {/* // 기본 셋팅 false */}
+            <h3>{`현재 상영중인 영화`}</h3>
             <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
               <Row
                 variants={rowVariants}
@@ -235,7 +236,7 @@ const Slider = styled.div`
 
 const Row = styled(motion.div)`
   display: grid;
-  gap: 5px;
+  gap: 10px;
   grid-template-columns: repeat(6, 1fr);
   position: absolute;
   width: 100%;
@@ -250,6 +251,8 @@ const Box = styled(motion.div)<{ bgphoto: string }>`
   font-size: 66px;
   position: relative;
   cursor: pointer;
+  box-shadow: rgb(255 255 255 / 22%) 0px 2px 15px 0px;
+  border-radius: 15px;
   &:first-child {
     transform-origin: center left;
   }

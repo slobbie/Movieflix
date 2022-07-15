@@ -2,9 +2,9 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import { ThemeProvider } from 'styled-components';
-import Home from './components/Home';
+import Home from './page/Home';
 import Search from './components/Search';
-import Tv from './components/Tv';
+import Tv from './page/Tv';
 import Nav from './layout/Nav';
 import { theme } from './theme';
 
