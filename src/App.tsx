@@ -2,18 +2,19 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import { ThemeProvider } from 'styled-components';
-import Home from './page/Home';
+import Home from './page/Movie';
 import Search from './components/Search';
 import Tv from './page/Tv';
 import Nav from './layout/Nav';
 import { theme } from './theme';
+import Movie from './page/Movie';
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <Nav />
       <Routes>
-        <Route path='/*' element={<Home />} />
+        <Route path='/movies/*' element={<Movie />} />
         <Route path='/TV' element={<Tv />} />
         <Route path='/search' element={<Search />} />
       </Routes>

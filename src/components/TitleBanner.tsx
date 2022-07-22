@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { IGetMoviesDataModel } from '../../Api/model/movie-data-model';
-import { makeImgePath } from '../utils';
+import { IGetMoviesDataModel } from '../Api/model/movie-data-model';
+import { makeImgePath } from './utils';
 
 interface TitleBannerprops {
   data?: IGetMoviesDataModel;
@@ -32,6 +32,7 @@ const Banner = styled.div<{ bgPhoto: string }>`
 const Title = styled.h2`
   font-size: 50px;
   margin-bottom: 20px;
+  margin-top: 15px;
   margin-left: 15px;
 `;
 
