@@ -9,12 +9,14 @@ import { theme } from './theme';
 import Movie from './page/Movie';
 import Detail from './components/Detail';
 import NotFound from './components/NotFound';
+import Home from './page/Home';
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <Nav />
       <Routes>
+        <Route path='/' element={<Home />} />
         <Route path='/movies' element={<Movie />}>
           <Route path=':movieId' element={<Detail />} />
         </Route>

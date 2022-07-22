@@ -35,3 +35,9 @@ export function similarTv(tvId: string) {
     `${BASE_URL}/tv/${tvId}/similar?api_key=${MOVIE_API_KEY}&language=ko-KR`
   ).then((response) => response.json());
 }
+
+export const getMoviesTrailer = (movieId?: string) => {
+  return fetch(
+    `${BASE_URL}/movie/${movieId}/videos?api_key=${MOVIE_API_KEY}`
+  ).then((response) => response.json());
+};

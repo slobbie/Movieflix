@@ -51,7 +51,7 @@ const Search = () => {
   );
   const onClickBox = (mediaType: string, searchId: number) => {
     if (mediaType === 'movie') {
-      navigate(`/search/movies/${searchId}`);
+      navigate(`/movies/${searchId}`);
     } else if (mediaType === 'tv') {
       navigate(`/tv/${searchId}`);
     } else {

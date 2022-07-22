@@ -22,3 +22,9 @@ export const getTopRatedTv = () => {
     `${BASE_URL}/tv/top_rated?api_key=${MOVIE_API_KEY}&language=ko-KR&page=1`
   ).then((response) => response.json());
 };
+
+export const getTvTrailer = (tvId?: string) => {
+  return fetch(`${BASE_URL}/tv/${tvId}/videos?api_key=${MOVIE_API_KEY}`).then(
+    (response) => response.json()
+  );
+};

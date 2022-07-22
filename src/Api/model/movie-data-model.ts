@@ -44,3 +44,13 @@ export interface IGetMovieDetailModel {
   runtime: number;
   number_of_seasons: number;
 }
+
+export interface IMovieTrailer {
+  key: string;
+  id: string;
+}
+
+export interface IGetMoviesTrailer {
+  id: number;
+  results: IMovieTrailer[];
+}

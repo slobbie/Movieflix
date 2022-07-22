@@ -1,13 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useMatch, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { getMovieDetail } from '../Api/MovieApi';
-import { IGetMovieDetailModel } from '../Api/model/movie-data-model';
+import { getMovieDetail, getMoviesTrailer } from '../Api/MovieApi';
+import {
+  IGetMovieDetailModel,
+  IGetMoviesTrailer,
+} from '../Api/model/movie-data-model';
 import Similar from './Similar';
-import { makeImgePath } from './utils';
-import { getTvDetail } from '../Api/TvApi';
+import { makeImgePath, makeTrailerPath } from './utils';
+import { getTvDetail, getTvTrailer } from '../Api/TvApi';
 import noPoster from '../assets/noPosterSmall.png';
+import ReactPlayer from 'react-player';
+import { BsVolumeDown, BsVolumeMute } from 'react-icons/bs';
 
 interface RouteParams {
   movieId: string;
@@ -16,15 +21,20 @@ interface RouteParams {
 
 const Detail = () => {
   const { movieId, tvId } = useParams() as unknown as RouteParams;
-  const bigMovieMatch = useMatch('/movies/:movieId');
-  const bigTvMatch = useMatch('/tv/:tvId');
+  const [volum, setVolum] = useState(false);
 
-  // const movieId = bigMovieMatch?.params.movieId;
-  // const tvId: any = bigTvMatch?.params.tvId;
+  const { data: TrailerData, isLoading: TrailerLoading } =
+    useQuery<IGetMoviesTrailer>(
+      'trailer',
+      () => (movieId ? getMoviesTrailer(movieId) : getTvTrailer(tvId)),
+      {
+        keepPreviousData: true,
+      }
+    );
 
   const { data: Detail, isLoading: movieDetailLoading } =
     useQuery<IGetMovieDetailModel>(
-      ['movieDetail'],
+      ['Detail'],
       () => (movieId ? getMovieDetail(movieId) : getTvDetail(tvId)),
       {
         keepPreviousData: true,
@@ -49,34 +59,66 @@ const Detail = () => {
     };
   }, []);
 
+  const volumClick = () => setVolum((prev) => !prev);
+
   return (
     <>
       {movieDetailLoading ? (
         <p>Loading</p>
       ) : (
         <Container>
-          <BigCover
-            style={{
-              backgroundImage: Detail?.backdrop_path
-                ? `linear-gradient(to top, black, transparent) , url(${makeImgePath(
-                    Detail?.backdrop_path,
-                    'w500'
-                  )})`
-                : noPoster,
-            }}
-          />
+          {tvId && (
+            <BigCover
+              style={{
+                backgroundImage: Detail?.backdrop_path
+                  ? `linear-gradient(to top, black, transparent) , url(${makeImgePath(
+                      Detail?.backdrop_path,
+                      'w500'
+                    )})`
+                  : noPoster,
+              }}
+            />
+          )}
+          {movieId && (
+            <PlayerBox>
+              <ReactPlayer
+                url={makeTrailerPath(TrailerData?.results[0].key)}
+                volume={volum ? 0.2 : 0}
+                playing={true}
+                loop={true}
+                width='150%'
+                height='600px'
+                style={{ scale: 1.5 }}
+              />
+            </PlayerBox>
+          )}
           <TitleTopBox>
             <BigTitle>{movieId ? Detail?.title : Detail?.name}</BigTitle>
             <TopRate>{`⭐️ ${Number(Detail?.vote_average).toFixed(
               2
             )}`}</TopRate>
           </TitleTopBox>
+          <VoulumBox>
+            <Voulum onClick={volumClick}>
+              {volum ? (
+                <BsVolumeMute className='buttonIcon' />
+              ) : (
+                <BsVolumeDown className='buttonIcon' />
+              )}
+            </Voulum>
+          </VoulumBox>
           <RunTime>
             <Text>
               {movieId
                 ? `${hour}시간 ${minutes}분`
                 : `시즌: ${Detail?.number_of_seasons}`}
             </Text>
+            <Genres>
+              {movieId &&
+                Detail?.genres.map((genre) => (
+                  <Genre key={genre.id}>{genre.name}</Genre>
+                ))}
+            </Genres>
           </RunTime>
           <BigOverview>{Detail?.overview}</BigOverview>
           <Similar />
@@ -94,6 +136,16 @@ const Container = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
+`;
+
+const PlayerBox = styled.div`
+  width: 100%;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
 `;
 
 const BigCover = styled.div`
@@ -139,12 +191,32 @@ const RunTime = styled.div`
   margin: 20px;
   padding: 5px 5px;
   position: relative;
-  border-radius: 5px;
   font-weight: bold;
   top: -40px;
   display: flex;
   color: #fff;
   align-items: center;
+`;
+
+const VoulumBox = styled.div`
+  width: 100%;
+  display: flex;
+`;
+
+const Voulum = styled.button`
+  position: relative;
+  top: -40px;
+  margin-left: auto;
+  margin-right: 20px;
+  border: none;
+  background-color: transparent;
+  .buttonIcon {
+    width: 30px;
+    height: 30px;
+  }
+  .buttonIcon path {
+    fill: ${(props) => props.theme.white.lighter};
+  }
 `;
 
 const Text = styled.span``;
