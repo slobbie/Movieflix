@@ -79,9 +79,9 @@ const Nav = () => {
           {/* // 태그가 motion 을 얻으면 layoutId을 가질수 있는데 layoutId로 모션을 조절 할수있다 */}
 
           <Item>
-            <Link to='/'>
+            <Link to='movies'>
               {homeMetch && <Circle layoutId='circle' />}
-              Home
+              Movie
             </Link>
           </Item>
           <Item>
@@ -132,6 +132,7 @@ const NavBar = styled(motion.nav)`
   padding: 20px 60px;
   font-size: 12px;
   color: white;
+  z-index: 1000;
 `;
 
 const Col = styled.div`

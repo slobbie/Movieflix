@@ -4,8 +4,9 @@ import styled from 'styled-components';
 import { useMatch } from 'react-router-dom';
 import { IGetMoviesDataModel, IMovie } from '../Api/model/movie-data-model';
 import { motion } from 'framer-motion';
-import { similarMovie, similarTv } from '../Api/Api';
+import { similarMovie, similarTv } from '../Api/MovieApi';
 import { makeImgePath } from './utils';
+import noPoster from '../assets/noPosterSmall.png';
 
 const boxVariants = {
   normal: {
@@ -35,7 +36,7 @@ const infoVariants = {
 
 const Similar = () => {
   const bigMovieMatch = useMatch('/movies/:movieId');
-  const bigTvMatch = useMatch('/movies/:tvId');
+  const bigTvMatch = useMatch('/tv/:tvId');
 
   const movieId = bigMovieMatch?.params.movieId;
   const tvId: any = bigTvMatch?.params.tvId;
@@ -58,9 +59,10 @@ const Similar = () => {
                 whileHover='hover'
                 key={movie.id}
                 transition={{ type: 'tween' }}
-                bgPhoto={
-                  movie.backdrop_path &&
-                  makeImgePath(movie.backdrop_path, 'w500')
+                bgphoto={
+                  movie.backdrop_path
+                    ? makeImgePath(movie.backdrop_path, 'w500')
+                    : noPoster
                 }
               >
                 <Info variants={infoVariants}>
@@ -82,9 +84,9 @@ const Container = styled.div`
   gap: 10px;
   padding: 20px;
 `;
-const Box = styled(motion.div)<{ bgPhoto: string }>`
+const Box = styled(motion.div)<{ bgphoto: string }>`
   height: 200px;
-  background-image: url(${(props) => props.bgPhoto});
+  background-image: url(${(props) => props.bgphoto});
   background-size: cover;
   background-position: center center;
   border-radius: 5px;

@@ -1,21 +1,26 @@
-import { AnimatePresence, motion, useViewportScroll } from 'framer-motion';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useQuery } from 'react-query';
-import { useMatch, useNavigate, useParams } from 'react-router-dom';
+import { useMatch, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { getMovieDetail, getTvDetail } from '../Api/Api';
+import { getMovieDetail } from '../Api/MovieApi';
 import { IGetMovieDetailModel } from '../Api/model/movie-data-model';
 import Similar from './Similar';
 import { makeImgePath } from './utils';
+import { getTvDetail } from '../Api/TvApi';
+import noPoster from '../assets/noPosterSmall.png';
+
+interface RouteParams {
+  movieId: string;
+  tvId: string;
+}
 
 const Detail = () => {
-  const Navigate = useNavigate();
-
+  const { movieId, tvId } = useParams() as unknown as RouteParams;
   const bigMovieMatch = useMatch('/movies/:movieId');
-  const bigTvMatch = useMatch('/movies/:tvId');
+  const bigTvMatch = useMatch('/tv/:tvId');
 
-  const movieId = bigMovieMatch?.params.movieId;
-  const tvId: any = bigTvMatch?.params.tvId;
+  // const movieId = bigMovieMatch?.params.movieId;
+  // const tvId: any = bigTvMatch?.params.tvId;
 
   const { data: Detail, isLoading: movieDetailLoading } =
     useQuery<IGetMovieDetailModel>(
@@ -26,13 +31,23 @@ const Detail = () => {
       }
     );
 
-  const onOverlayClick = () => {
-    Navigate('/movies');
-  };
-
   const time = Detail?.runtime;
   const hour = time && Math.floor(time / 60);
   const minutes = time && time % 60;
+
+  // 모달을 제외한 스크린의 스크롤을 막기위한 이벤트
+  useEffect(() => {
+    document.body.style.cssText = `
+      position: fixed; 
+      top: -${window.scrollY}px;
+      overflow-y: scroll;
+      width: 100%;`;
+    return () => {
+      const scrollY = document.body.style.top;
+      document.body.style.cssText = '';
+      window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
+    };
+  }, []);
 
   return (
     <>
@@ -42,15 +57,19 @@ const Detail = () => {
         <Container>
           <BigCover
             style={{
-              backgroundImage: `linear-gradient(to top, black, transparent) , url(${makeImgePath(
-                Detail?.backdrop_path,
-                'w500'
-              )})`,
+              backgroundImage: Detail?.backdrop_path
+                ? `linear-gradient(to top, black, transparent) , url(${makeImgePath(
+                    Detail?.backdrop_path,
+                    'w500'
+                  )})`
+                : noPoster,
             }}
           />
           <TitleTopBox>
             <BigTitle>{movieId ? Detail?.title : Detail?.name}</BigTitle>
-            <TopRate>{`⭐️ ${Detail?.vote_average}`}</TopRate>
+            <TopRate>{`⭐️ ${Number(Detail?.vote_average).toFixed(
+              2
+            )}`}</TopRate>
           </TitleTopBox>
           <RunTime>
             <Text>
@@ -58,12 +77,6 @@ const Detail = () => {
                 ? `${hour}시간 ${minutes}분`
                 : `시즌: ${Detail?.number_of_seasons}`}
             </Text>
-            <Genres>
-              {Detail &&
-                Detail?.genres.map((genre) => (
-                  <Genre key={genre.id}>{genre.name}</Genre>
-                ))}
-            </Genres>
           </RunTime>
           <BigOverview>{Detail?.overview}</BigOverview>
           <Similar />

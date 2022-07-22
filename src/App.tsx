@@ -1,23 +1,36 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import { ThemeProvider } from 'styled-components';
-import Home from './page/Movie';
 import Search from './components/Search';
 import Tv from './page/Tv';
 import Nav from './layout/Nav';
 import { theme } from './theme';
 import Movie from './page/Movie';
+import Detail from './components/Detail';
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <Nav />
+      {/* <Routes>
+          <Route path='/movies/*' element={<Movie />} />
+          <Route path='/TV/*' element={<Tv />} />
+          <Route path='/search/*' element={<Search />} />
+        </Routes> */}
       <Routes>
-        <Route path='/movies/*' element={<Movie />} />
-        <Route path='/TV' element={<Tv />} />
-        <Route path='/search' element={<Search />} />
+        <Route path='/movies' element={<Movie />}>
+          <Route path=':movieId' element={<Detail />} />
+        </Route>
+        <Route path='/tv' element={<Tv />}>
+          <Route path=':tvId' element={<Detail />} />
+        </Route>
+        <Route path='/search' element={<Search />}>
+          <Route path='movies/:movieId' element={<Detail />} />
+          <Route path='tv/:tvId' element={<Detail />} />
+        </Route>
       </Routes>
+
       <GlobalStyle />
     </ThemeProvider>
   );

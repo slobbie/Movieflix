@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import { useMatch, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { getMovies, topMovies, upcomingMovie } from '../Api/Api';
+import { getMovies, topMovies, upcomingMovie } from '../Api/MovieApi';
 import { IGetMoviesDataModel, IMovie } from '../Api/model/movie-data-model';
 import TitleBanner from '../components/TitleBanner';
 import { makeImgePath } from '../components/utils';
@@ -100,23 +100,15 @@ const Movie = () => {
     }
   };
 
-  const DataGroup = [
-    {
-      id: 1,
-      title: '현재 상영중인 영화',
-      data: nowPlayingData,
-      index: index,
-    },
-    { id: 2, title: '개봉 예정 중인 영화', data: upcomingData, index: upIndex },
-    {
-      id: 3,
-      title: '다시보기 추천 콘텐츠',
-      data: topMovieData,
-      index: topIndex,
-    },
-  ];
-
-  //////////////////////////////////////////////////////////
+  const TopIncrassIndex = () => {
+    if (topMovieData) {
+      if (leaving) return;
+      toggleLeaving();
+      const totalMovies = topMovieData?.results.length - 2;
+      const maxIndex = Math.floor(totalMovies / offset) - 1;
+      setTopIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
+    }
+  };
 
   const Navigate = useNavigate();
   // exit 버그를 해결을 위한 상태값
@@ -209,6 +201,43 @@ const Movie = () => {
                 {upcomingData?.results
                   .slice(1)
                   .slice(offset * upIndex, offset * upIndex + offset)
+                  .map((movie: IMovie) => (
+                    <Box
+                      layoutId={`upcoming_${movie.id}`}
+                      key={movie.id}
+                      whileHover='hover'
+                      initial='normal'
+                      variants={boxVariants}
+                      transition={{ type: 'tween' }}
+                      onClick={() => onBoxClicked(movie.id)}
+                      bgphoto={makeImgePath(movie.backdrop_path, 'w400')}
+                    >
+                      <Info variants={infoVariants}>
+                        <h4>{movie.title}</h4>
+                      </Info>
+                    </Box>
+                  ))}
+              </Row>
+            </AnimatePresence>
+          </Slider>
+
+          <Slider>
+            <TopBox onClick={TopIncrassIndex}>
+              <Title>많이 본 영화</Title>
+              <AiOutlineArrowRight className='rightArrow' />
+            </TopBox>
+            <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
+              <Row
+                variants={rowVariants}
+                initial='hidden'
+                animate='visible'
+                exit='exit'
+                key={topIndex}
+                transition={{ type: 'tween', duration: 1 }}
+              >
+                {topMovieData?.results
+                  .slice(1)
+                  .slice(offset * topIndex, offset * topIndex + offset)
                   .map((movie: IMovie) => (
                     <Box
                       layoutId={`upcoming_${movie.id}`}
@@ -352,24 +381,4 @@ const BigCover = styled.div`
   background-size: cover;
   background-position: center center;
   height: 400px;
-`;
-
-const TitleTopBox = styled.div``;
-
-const TopRate = styled.div``;
-
-const BigTitle = styled.h3`
-  color: ${(props) => props.theme.white.lighter};
-  color: white;
-  padding: 20px;
-  font-size: 27px;
-  position: relative;
-  top: -60px;
-`;
-
-const BigOverview = styled.p`
-  position: relative;
-  padding: 20px;
-  color: ${(props) => props.theme.white.lighter};
-  top: -60px;
 `;

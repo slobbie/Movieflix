@@ -1,23 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
-import { IGetMoviesDataModel } from '../Api/model/movie-data-model';
 import { IGetTvDataModel } from '../Api/model/Tv-data-model';
 import { makeImgePath } from './utils';
 
 interface TitleBannerprops {
-  data?: IGetMoviesDataModel;
+  data?: IGetTvDataModel;
 }
 
-const TitleBanner = (props: TitleBannerprops) => {
+const TvTitleBanner = (props: TitleBannerprops) => {
   return (
     <Banner bgPhoto={makeImgePath(props.data?.results[0].backdrop_path || '')}>
-      <Title>{props.data?.results[0].title}</Title>
+      <Title>{props.data?.results[0].name}</Title>
       <Overview>{props.data?.results[0].overview}</Overview>
     </Banner>
   );
 };
 
-export default TitleBanner;
+export default TvTitleBanner;
 
 const Banner = styled.div<{ bgPhoto: string }>`
   height: 70vh;

@@ -3,7 +3,9 @@ export interface IMovie {
   backdrop_path: string;
   poster_path: string;
   title: string;
+  name: string;
   overview: string;
+  media_type: string;
 }
 
 export interface IGetMoviesDataModel {
