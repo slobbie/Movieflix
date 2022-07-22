@@ -262,12 +262,12 @@ const Movie = () => {
               <>
                 <Overlay
                   onClick={onOverlayClick}
-                  exit={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
+                  // exit={{ opacity: 0 }}
+                  // animate={{ opacity: 1 }}
                 />
                 <BigMovie
                   style={{ top: scrollY.get() + 100 }}
-                  layoutId={bigMovieMatch.params.movieId}
+                  // layoutId={bigMovieMatch.params.movieId}
                 >
                   <Detail />
                 </BigMovie>

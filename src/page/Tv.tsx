@@ -200,7 +200,7 @@ const Tv = () => {
                   .slice(offset * popIndex, offset * popIndex + offset)
                   .map((Tv: IMovie) => (
                     <Box
-                      layoutId={`upcoming_${Tv.id}`}
+                      layoutId={`Pop_${Tv.id}`}
                       key={Tv.id}
                       whileHover='hover'
                       initial='normal'
@@ -241,7 +241,7 @@ const Tv = () => {
                   .slice(offset * topIndex, offset * topIndex + offset)
                   .map((Tv: IMovie) => (
                     <Box
-                      layoutId={`upcoming_${Tv.id}`}
+                      layoutId={`Top_${Tv.id}`}
                       key={Tv.id}
                       whileHover='hover'
                       initial='normal'
@@ -267,12 +267,12 @@ const Tv = () => {
               <>
                 <Overlay
                   onClick={onOverlayClick}
-                  exit={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
+                  // exit={{ opacity: 0 }}
+                  // animate={{ opacity: 1 }}
                 />
                 <BigMovie
                   style={{ top: scrollY.get() + 100 }}
-                  layoutId={bigTvMatch.params.tvId}
+                  // layoutId={bigTvMatch.params.tvId}
                 >
                   <Detail />
                 </BigMovie>
