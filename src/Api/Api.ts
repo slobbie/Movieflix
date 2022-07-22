@@ -30,3 +30,14 @@ export const getTvDetail = (tvId: string) => {
     `${BASE_URL}/tv/${tvId}?api_key=${MOVIE_API_KEY}&language=ko-KR`
   ).then((response) => response.json());
 };
+
+export function similarMovie(movieId: string) {
+  return fetch(
+    `${BASE_URL}/movie/${movieId}/similar?api_key=${MOVIE_API_KEY}&language=ko-KR`
+  ).then((response) => response.json());
+}
+export function similarTv(tvId: string) {
+  return fetch(
+    `${BASE_URL}/tv/${tvId}/similar?api_key=${MOVIE_API_KEY}&language=ko-KR`
+  ).then((response) => response.json());
+}

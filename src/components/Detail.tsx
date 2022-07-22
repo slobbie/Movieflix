@@ -5,6 +5,7 @@ import { useMatch, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { getMovieDetail, getTvDetail } from '../Api/Api';
 import { IGetMovieDetailModel } from '../Api/model/movie-data-model';
+import Similar from './Similar';
 import { makeImgePath } from './utils';
 
 const Detail = () => {
@@ -65,6 +66,7 @@ const Detail = () => {
             </Genres>
           </RunTime>
           <BigOverview>{Detail?.overview}</BigOverview>
+          <Similar />
         </Container>
       )}
     </>

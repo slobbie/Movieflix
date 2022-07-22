@@ -207,7 +207,7 @@ const Movie = () => {
                 transition={{ type: 'tween', duration: 1 }}
               >
                 {upcomingData?.results
-                  .slice(2)
+                  .slice(1)
                   .slice(offset * upIndex, offset * upIndex + offset)
                   .map((movie: IMovie) => (
                     <Box
