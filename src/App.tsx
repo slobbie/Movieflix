@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import { ThemeProvider } from 'styled-components';
 import Search from './components/Search';
@@ -8,16 +8,12 @@ import Nav from './layout/Nav';
 import { theme } from './theme';
 import Movie from './page/Movie';
 import Detail from './components/Detail';
+import NotFound from './components/NotFound';
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <Nav />
-      {/* <Routes>
-          <Route path='/movies/*' element={<Movie />} />
-          <Route path='/TV/*' element={<Tv />} />
-          <Route path='/search/*' element={<Search />} />
-        </Routes> */}
       <Routes>
         <Route path='/movies' element={<Movie />}>
           <Route path=':movieId' element={<Detail />} />
@@ -29,6 +25,7 @@ function App() {
           <Route path='movies/:movieId' element={<Detail />} />
           <Route path='tv/:tvId' element={<Detail />} />
         </Route>
+        <Route path='*' element={<NotFound />} />
       </Routes>
 
       <GlobalStyle />
@@ -39,7 +36,7 @@ function App() {
 export default App;
 
 const GlobalStyle = createGlobalStyle`
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
+
   html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
