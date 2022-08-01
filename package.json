@@ -1,6 +1,6 @@
 {
-  "homepage": "https://slobbie.github.io/Movieflix",
-  "name": "Movieflix",
+  "homepage": "https://slobbie.github.io/TvMovie",
+  "name": "TvMovie",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

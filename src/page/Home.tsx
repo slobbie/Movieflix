@@ -10,11 +10,10 @@ const Home = () => {
           <SectionWrapper>
             <SectionContainer>
               <h1>
-                영화와 시리즈를 <br /> 무제한으로.
+                영화 와 Tv 정보를
+                <br /> 간편하게.
               </h1>
-              <h4>
-                다양한 디바이스에서 시청하세요. MovieFlix 는 다 가능합니다.
-              </h4>
+              <h4>원하는 정보를 간편하게 search 해보세요.</h4>
               <SectionBtnContainer>
                 <SectionBtnBox to='/movies'>
                   <SectionBtn>시작하기</SectionBtn>
@@ -24,7 +23,7 @@ const Home = () => {
           </SectionWrapper>
         </MainOpacity>
       </MainContainer>
-      <PlayContainer>
+      {/* <PlayContainer>
         <PlayBox>
           <TextContainer>
             <div>
@@ -73,7 +72,7 @@ const Home = () => {
             </div>
           </TextContainer>
         </PlayBox>
-      </PlayContainer>
+      </PlayContainer> */}
     </Body>
   );
 };
@@ -87,7 +86,7 @@ const Body = styled.div`
 
 export const MainContainer = styled.div`
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background-image: url('https://assets.nflxext.com/ffe/siteui/vlv3/9737377e-a430-4d13-ad6c-874c54837c49/945eec79-6856-4d95-b4c6-83ff5292f33d/KR-ko-20220111-popsignuptwoweeks-perspective_alpha_website_large.jpg');
   background-repeat: no-repeat;
   background-size: cover;
@@ -103,7 +102,7 @@ export const MainOpacity = styled.div`
 
 const SectionWrapper = styled.div`
   width: 100%;
-  height: 65vh;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;

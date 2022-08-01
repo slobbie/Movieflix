@@ -66,7 +66,7 @@ const Nav = () => {
     <NavBar variants={navVariants} animate={navAnimation} initial={'top'}>
       <Col>
         <Link to='/'>
-          <MovieFlix fill='red' width={120} height={20} className='LogoIcon' />
+          {/* <MovieFlix fill='red' width={120} height={20} className='LogoIcon' /> */}
         </Link>
         <Items>
           {/* // 태그가 motion 을 얻으면 layoutId을 가질수 있는데 layoutId로 모션을 조절 할수있다 */}
