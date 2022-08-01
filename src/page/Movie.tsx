@@ -82,7 +82,7 @@ const Movie = () => {
       if (leaving) return; // leaving 이 true 라면  아무것도 하지 않는다.
       toggleLeaving();
       // 총 영화의 갯수   -1 인 이유 이미 메인 화면에서 한장의 사용하고 있기 떄문에다.
-      const totalMovie = nowPlayingData.results.length - 2;
+      const totalMovie = nowPlayingData.results.length - 1;
       // 영화를 총갯수 구하는법  내림 처리 20개 여서 한개가 남기때문에 내림 처리해준다
       const maxIndex = Math.floor(totalMovie / offset) - 1; // page 가 0 에서 시작하기 때문에 -1
       // index 가 max로 되돌아가면 0 아니면 증가시킨다.
@@ -124,11 +124,11 @@ const Movie = () => {
 
   const bigMovieMatch = useMatch('/movies/:movieId');
 
-  const clickedMovie: any =
-    bigMovieMatch?.params.movieId &&
-    nowPlayingData?.results.find(
-      (movie: IMovie) => movie.id + '' === bigMovieMatch.params.movieId
-    );
+  // const clickedMovie: any =
+  //   bigMovieMatch?.params.movieId &&
+  //   nowPlayingData?.results.find(
+  //     (movie: IMovie) => movie.id + '' === bigMovieMatch.params.movieId
+  //   );
 
   const onOverlayClick = () => {
     Navigate('/movies');

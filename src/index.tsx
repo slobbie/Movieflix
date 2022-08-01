@@ -10,7 +10,7 @@ import { RecoilRoot } from 'recoil';
 const queryClient = new QueryClient();
 
 ReactDOM.render(
-  <BrowserRouter>
+  <BrowserRouter basename={process.env.PUBLIC_URL}>
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
         <App />
