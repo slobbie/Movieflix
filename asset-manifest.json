@@ -1,0 +1,12 @@
+{
+  "files": {
+    "main.js": "/movieflix/static/js/main.b4136b71.js",
+    "static/media/noPosterSmall.png": "/movieflix/static/media/noPosterSmall.ea2ad10250319452c1b3.png",
+    "static/media/MovieFlix.svg": "/movieflix/static/media/MovieFlix.059622c0127d491b133c3d09772823d1.svg",
+    "index.html": "/movieflix/index.html",
+    "main.b4136b71.js.map": "/movieflix/static/js/main.b4136b71.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.b4136b71.js"
+  ]
+}
