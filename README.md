@@ -104,6 +104,8 @@ framer-motion 가 제공하는 Hooks 를 이용하여 nav 가 Top 위치 에서 
 
 - slider
 
+![화면_기록_2022-08-02_오전_3_15_17_AdobeExpress](https://user-images.githubusercontent.com/86298255/182216341-b38b5c4c-c575-481f-a94d-8965a7a4f4d6.gif)
+
 ```
 const rowVariants = {
   // 보이지 않을때
