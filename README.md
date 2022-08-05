@@ -1,8 +1,8 @@
 ## 🚗 MovieFlix
 
-🍎 [배포 링크](https://slobbie.github.io/Movieflix/)
+🍎 [배포 링크](https://slobbie.github.io/TvMovie/)
 
-<img width="1676" alt="스크린샷 2022-08-01 오후 9 52 18" src="https://user-images.githubusercontent.com/86298255/182152010-365391f9-c324-4925-a348-0e30de4f7e03.png">
+![스크린샷 2022-08-05 오후 5 14 30](https://user-images.githubusercontent.com/86298255/183033625-b5763791-d087-4dc3-adfb-ffadf7b5cc25.png)
 
 ## 사용 스택
 
